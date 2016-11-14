@@ -3,13 +3,15 @@ import datetime
 import os
 import sys
 import numpy as np
+import copy
 # Gets the path/library with my Machine Learning Programs and adds it to the
 # current PATH so it can be imported
 LIB_PATH = os.path.dirname(os.getcwd()) # Goes one parent directory up
 LIB_PATH = os.path.dirname(LIB_PATH) # Another parent directory up
 LIB_PATH = LIB_PATH + "/Library/" # Appends the Library folder to the path
 sys.path.append(LIB_PATH)
-from KNN import *
+from KNN import KNN
+from fout import Write_CSV
 
 
 # Reads in the csv file. It accepts a "blank string" such that it will search
@@ -49,6 +51,7 @@ def KNN_Regression(dataSet, miss_tkn="", k=3, dist_eq="Euclidean", p=3):
     missing_idx = []
     idx = 0
 
+    print("Running KNN_Regression")
     # Separate the data between missing and non-missing
     # Also stores the indices of each in the original list so that the
     # ordered list can be returned
@@ -64,7 +67,9 @@ def KNN_Regression(dataSet, miss_tkn="", k=3, dist_eq="Euclidean", p=3):
 
     # Perform KNN Regression and update the missing indices
     for i in range(0, len(missing_lst)):
-        none_lst_rm = none_lst[:]
+        update_str = "Running: " + str(i + 1) + '/' + str(len(missing_lst))
+        print('\t' + update_str)
+        none_lst_rm = copy.deepcopy(none_lst)
         miss_rm = missing_lst[i][:]
 
         # Gets all the indices in miss_rm that have the miss_tkn
@@ -76,12 +81,7 @@ def KNN_Regression(dataSet, miss_tkn="", k=3, dist_eq="Euclidean", p=3):
             idx = indx[j]
             miss_rm.pop(idx)
             for k_ in range(0, len(none_lst_rm)):
-                if k_ == 725:
-                    print(len(none_lst_rm[k_]), end="")
                 none_lst_rm[k_].pop(idx)
-                if k_ == 725:
-                    print('\t', len(none_lst_rm[k_]))
-        print(len(miss_rm))
 
         # Gets the k nearest neighbors now that value is removed
         k_n = KNN(miss_rm, none_lst_rm, k, dist_eq, p)
@@ -101,7 +101,6 @@ def KNN_Regression(dataSet, miss_tkn="", k=3, dist_eq="Euclidean", p=3):
 
         # Get the average of the missing values from the full list and update
         # that value in the missing list
-        print("match_idx", match_idx)
         for idx in indx:
             avg = []
             for j in match_idx:
@@ -181,7 +180,7 @@ def MakeFeatures(dataSet):
 
 DIR = os.getcwd()
 inFile = DIR + "/RAW_DATA/AirQualityUCI.csv"
-outFile = DIR + "AirQuality_clean.csv"
+outFile = DIR + "/AirQuality_clean.csv"
 k_nn = 3
 num_blank = 2
 miss_tkn = "-200"
@@ -189,11 +188,10 @@ delim = ';'
 dist_eq = "Euclidean"
 
 data = ReadFile(inFile, miss_tkn, num_blank, delim)
-print(data[0])
 
 data = MakeFeatures(data)
 
-KNN_Regression(data, int(miss_tkn), k_nn, dist_eq)
+data = KNN_Regression(data, int(miss_tkn), k_nn, dist_eq)
 
-
-#print(data[0:4])
+# Write the data and features to a file
+Write_CSV(data, outFile)
