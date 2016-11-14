@@ -6,7 +6,7 @@ def Write_CSV(data, filename, precision=5):
     fout = open(filename, 'w')
     temp_str = "\"%." + str(precision) + "f\""
     for d in data:
-        for i in range(0, len(data)):
+        for i in range(0, len(d)):
             temp = d[i]
             temp = temp_str % temp
             if i < len(data)-1:
