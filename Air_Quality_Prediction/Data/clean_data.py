@@ -67,7 +67,7 @@ def KNN_Regression(dataSet, miss_tkn="", k=3, dist_eq="Euclidean", p=3):
 
     # Perform KNN Regression and update the missing indices
     for i in range(0, len(missing_lst)):
-        update_str = "Running: " + str(i + 1) + '/' + str(len(missing_lst))
+        update_str = "\tRunning: " + str(i + 1) + '/' + str(len(missing_lst))
         sys.stdout.write("%s\r" % update_str)
         sys.stdout.flush()
         none_lst_rm = copy.deepcopy(none_lst)
@@ -109,15 +109,11 @@ def KNN_Regression(dataSet, miss_tkn="", k=3, dist_eq="Euclidean", p=3):
             missing_lst[i][idx] = np.average(avg)
 
     # Rebuild the data so that it's in order of when it was read in
-    for indx in none_idx:
-        idx = 0
-        if len(missing_idx) > 0 and missing_idx[0] < indx:
-            idx = missing_idx[0]
-            final_data.append(missing_lst[idx])
-            missing_lst.pop(0)
-            missing_idx.pop(0)
-        else:
-            final_data.append(none_lst[idx])
+    count = 0
+    final_data = copy.deepcopy(dataSet)
+    for indx in missing_idx:
+        final_data[indx] = missing_lst[count]
+        count = count + 1
 
     return final_data
 
@@ -128,6 +124,7 @@ def KNN_Regression(dataSet, miss_tkn="", k=3, dist_eq="Euclidean", p=3):
 # each of the particulates and makes those a feature themselves. Doing it by
 # the hour gives the slope (rate of change) over the past hour (rise/run)
 def MakeFeatures(dataSet):
+    days = ["Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
     new_data = []
     count = 0
     temp_count = 0
@@ -144,15 +141,15 @@ def MakeFeatures(dataSet):
                 curr_data.append(data[i])
 
         if count >= 24:
-            # Get if it's a weekday [1, 0] or weekend [0, 1]
+            # Output a 1 if it matches the day feature, where the 0th is Saturday
+            # and so on
             dt = datetime.date(curr_data[2], curr_data[0], curr_data[1])
             dt = dt.strftime("%A")
-            if dt == "Saturday" or dt == "Sunday":
-                curr_data.append(0)
-                curr_data.append(1)
-            else:
-                curr_data.append(1)
-                curr_data.append(0)
+            for day in days:
+                if day == dt:
+                    curr_data.append(1)
+                else:
+                    curr_data.append(0)
 
             # Get the data over the past 24 hours
             past_24 = []
