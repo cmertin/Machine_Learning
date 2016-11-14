@@ -50,12 +50,12 @@ more accurate results. The overall features as of right now are
 16. AH Absolute Humidity
 17. Weekday (boolean)
 18. Weekend (boolean)
-19. The rest of these are the differences in 4-13 in the past 24 hours^*
+19. The rest of these are the differences in 5-14 in the past 24 hours<sup>*</sup>
 
-^* _Note_: How this is done is it goes hour by hour for the past 24 hours and
+<sup>*</sup> _Note_: How this is done is it goes hour by hour for the past 24 hours and
 subtracts values from the previous hour for that category. For example, if the
 feature vector currently being built is hour 2 on May 3, 2004, it will go back
-to hour 3 on May 2, 2004, subtract all the features (4-13) from hour 2 on May 2,
+to hour 3 on May 2, 2004, subtract all the features (5-14) from hour 2 on May 2,
 2004, and add those subtractions as features. Then it will go on to hour 4 on
 May 2, 2004, perform the same subtraction on hour 3, add those as features, and
 so forth.
