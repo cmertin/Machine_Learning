@@ -10,7 +10,7 @@ LIB_PATH = os.path.dirname(os.getcwd()) # Goes one parent directory up
 LIB_PATH = os.path.dirname(LIB_PATH) # Another parent directory up
 LIB_PATH = LIB_PATH + "/Library/" # Appends the Library folder to the path
 sys.path.append(LIB_PATH)
-from KNN import KNN
+from ML_Alg import KNN
 from fout import Write_CSV
 
 
