@@ -9,7 +9,7 @@ def Write_CSV(data, filename, precision=5):
         for i in range(0, len(d)):
             temp = d[i]
             temp = temp_str % temp
-            if i < len(data)-1:
+            if i < len(d)-1:
                 fout.write(temp + ',')
             else:
                 fout.write(temp + '\n')
