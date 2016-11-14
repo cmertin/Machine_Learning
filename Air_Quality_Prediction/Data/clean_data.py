@@ -75,15 +75,16 @@ def KNN_Regression(dataSet, miss_tkn="", k=3, dist_eq="Euclidean", p=3):
         for j in range(len(indx)-1, -1, -1):
             idx = indx[j]
             miss_rm.pop(idx)
-            for k in range(0, len(none_lst_rm)):
-                if k == 725:
-                    print(len(none_lst_rm[k]), end="")
-                none_lst_rm[k].pop(idx)
-                if k == 725:
-                    print('\t', len(none_lst_rm[k]))
+            for k_ in range(0, len(none_lst_rm)):
+                if k_ == 725:
+                    print(len(none_lst_rm[k_]), end="")
+                none_lst_rm[k_].pop(idx)
+                if k_ == 725:
+                    print('\t', len(none_lst_rm[k_]))
         print(len(miss_rm))
+
         # Gets the k nearest neighbors now that value is removed
-        k_n = KNN(miss_rm, none_lst_rm, k=3, dist_eq="Euclidean", p=3)
+        k_n = KNN(miss_rm, none_lst_rm, k, dist_eq, p)
 
         # Find indices of the nearest neighbors in the original list with none
         # missing that has all the features
@@ -91,8 +92,8 @@ def KNN_Regression(dataSet, miss_tkn="", k=3, dist_eq="Euclidean", p=3):
         for knn in k_n:
             for j in range(0, len(none_lst)):
                 match_count = 0
-                for k in range(0, 4):
-                    if knn[k] == none_lst[j][k]:
+                for k_ in range(0, 4):
+                    if knn[k_] == none_lst[j][k_]:
                         match_count = match_count + 1
                 if match_count == 4:
                     match_idx.append(j)
