@@ -8,11 +8,6 @@ def KNN(c, dataSet, k=3, dist_eq="Euclidean", p=3, r_dist=False):
     dist = []
     index = 0
     for data in dataSet:
-        #print("idx", index)
-        #print("\n\n")
-        #print(c)
-        #print("\n")
-        #print(data)
         distance = 0
         if dist_eq == "Euclidean":
             distance = spd.euclidean(c, data)

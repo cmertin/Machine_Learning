@@ -17,7 +17,7 @@ from KNN import *
 # num_blank missing values, it throws the data away. This will allow you to choose
 # how much "accuracy" you want to give to your data. To read in all of the data,
 # set num_blank equal to -1.
-def ReadFile(filename, blank_str="", num_blank=2, delim=','):
+def ReadFile(filename, miss_tkn="", num_blank=2, delim=','):
     assert num_blank >= -1, "num_blank must be >= -1"
     data = []
     lines = [line.rstrip('\n') for line in open(filename)]
@@ -26,7 +26,7 @@ def ReadFile(filename, blank_str="", num_blank=2, delim=','):
         curr_line = []
         ln = line.split(delim)
         if num_blank != -1:
-            blank_count = ln.count(blank_str)
+            blank_count = ln.count(miss_tkn)
             if blank_count > num_blank:
                 continue
         for i in range(0, len(ln)-2):
@@ -41,7 +41,7 @@ def ReadFile(filename, blank_str="", num_blank=2, delim=','):
         data.append(curr_line)
     return data
 
-def KNN_Regression(dataSet, blank_str="", k=3, dist_eq="Euclidean", p=3):
+def KNN_Regression(dataSet, miss_tkn="", k=3, dist_eq="Euclidean", p=3):
     final_data = []
     none_lst = []
     none_idx = []
@@ -53,7 +53,7 @@ def KNN_Regression(dataSet, blank_str="", k=3, dist_eq="Euclidean", p=3):
     # Also stores the indices of each in the original list so that the
     # ordered list can be returned
     for data in dataSet:
-        count = data.count(blank_str)
+        count = data.count(miss_tkn)
         if count == 0:
             none_lst.append(data[:])
             none_idx.append(idx)
@@ -62,11 +62,13 @@ def KNN_Regression(dataSet, blank_str="", k=3, dist_eq="Euclidean", p=3):
             missing_idx.append(idx)
         idx = idx + 1
 
-    # Get the closest vectors for each of the missing ones
+    # Perform KNN Regression and update the missing indices
     for i in range(0, len(missing_lst)):
         none_lst_rm = none_lst[:]
         miss_rm = missing_lst[i][:]
-        indx = [j for j, x in enumerate(miss_rm) if x == blank_str]
+
+        # Gets all the indices in miss_rm that have the miss_tkn
+        indx = [j for j, x in enumerate(miss_rm) if x == miss_tkn]
 
         # Removes the missing features from the lists to perform a more accurate
         # KNN Regression
@@ -181,16 +183,16 @@ inFile = DIR + "/RAW_DATA/AirQualityUCI.csv"
 outFile = DIR + "AirQuality_clean.csv"
 k_nn = 3
 num_blank = 2
-blank_str = "-200"
+miss_tkn = "-200"
 delim = ';'
 dist_eq = "Euclidean"
 
-data = ReadFile(inFile, blank_str, num_blank, delim)
+data = ReadFile(inFile, miss_tkn, num_blank, delim)
 print(data[0])
 
 data = MakeFeatures(data)
 
-KNN_Regression(data, int(blank_str), k_nn, dist_eq)
+KNN_Regression(data, int(miss_tkn), k_nn, dist_eq)
 
 
 #print(data[0:4])
