@@ -25,3 +25,57 @@ This dataset can be used exclusively for research purposes. Commercial purposes 
 12. Temperature in °C
 13. Relative Humidity (%)
 14. AH Absolute Humidity
+
+###Extra features
+
+I decided to create features based on the given Information to hopefully provide
+more accurate results. The overall features as of right now are
+
+0. Month
+1. Day
+2. Year
+3. Time (Hour)
+4. True hourly averaged concentration CO in mg/m^3 (reference analyzer)
+5. PT08.S1 (tin oxide) hourly averaged sensor response (nominally CO targeted)
+6. True hourly averaged overall Non-Metanic HydroCarbons concentration in microg/m^3 (reference analyzer)
+7. True hourly averaged Benzene concentration in microg/m^3 (reference analyzer)
+8. PT08.S2 (titania) hourly averaged sensor response (nominally NMHC targeted)
+9. True hourly averaged NOx concentration in ppb (reference analyzer)
+10. PT08.S3 (tungsten oxide) hourly averaged sensor response (nominally NOx targeted)
+11. True hourly averaged NO2 concentration in microg/m^3 (reference analyzer)
+12. PT08.S4 (tungsten oxide) hourly averaged sensor response (nominally NO2 targeted)
+13. PT08.S5 (indium oxide) hourly averaged sensor response (nominally O3 targeted)
+14. Temperature in °C
+15. Relative Humidity (%)
+16. AH Absolute Humidity
+17. Weekday (boolean)
+18. Weekend (boolean)
+19. The rest of these are the differences in 4-13 in the past 24 hours^*
+
+^* _Note_: How this is done is it goes hour by hour for the past 24 hours and
+subtracts values from the previous hour for that category. For example, if the
+feature vector currently being built is hour 2 on May 3, 2004, it will go back
+to hour 3 on May 2, 2004, subtract all the features (4-13) from hour 2 on May 2,
+2004, and add those subtractions as features. Then it will go on to hour 4 on
+May 2, 2004, perform the same subtraction on hour 3, add those as features, and
+so forth.
+
+With this many features, I am worried about over fitting of the data, but as
+this is a test, I can always change my model later. I was trying to get the
+overall trend of the particulates in the past 24 hours with this technique.
+
+Numbers 17 and 18 are there because there should *most likely* be more pollution
+during the weekday than on the weekend thanks to business traffic. I was
+considering using a boolean value for each day, but I thought that just
+differentiating between the weekday and weekend should be good enough.
+
+This data is stored in `AirQuality_clean.csv`
+
+###Data Manipulation
+
+To clean the data, I parse the original data and I remove any data points that
+have more than 2 missing features. From here, I take the remaining data and I
+separate it based on those with and without missing features. From here, I
+iterate through all the missing features and perform K-Nearest Neighbors Regression
+on it, and use the data that had all of the features, with `k = 3`. Then I took
+the average of the features and assigned it to the value of the missing feature.
