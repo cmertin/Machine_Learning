@@ -68,7 +68,8 @@ def KNN_Regression(dataSet, miss_tkn="", k=3, dist_eq="Euclidean", p=3):
     # Perform KNN Regression and update the missing indices
     for i in range(0, len(missing_lst)):
         update_str = "Running: " + str(i + 1) + '/' + str(len(missing_lst))
-        print('\t' + update_str)
+        sys.stdout.write("%s\r" % update_str)
+        sys.stdout.flush()
         none_lst_rm = copy.deepcopy(none_lst)
         miss_rm = missing_lst[i][:]
 
