@@ -28,7 +28,7 @@ def ReadFile(filename):
     return data
 
 BASE_DIR = os.getcwd()
-inFile = BASE_DIR + "/Data/AirQuality_clean2.csv"
+inFile = BASE_DIR + "/Data/AirQuality_clean.csv"
 error_dist = "Error_Distribution.pdf"
 error_dist_png = "Error_Distribution.png"
 
@@ -67,9 +67,9 @@ hours = []
 result_mat = np.zeros([len(test_set), len(thetas)])
 rel_err_mat = np.zeros([len(test_set), len(thetas)])
 
-count = 0
 
-result_vals = []
+
+
 pollutant = []
 pol_labels = ["CO", "Tin Oxide (PT08.S1)", "Non-Metanic HydroCarbons", "Benzene", "Titania (PT08.S2)", "NOx", "Tungsten Oxide (PT08.S3)", "NO2", "Tungsten Oxide (PT08.S4)", "Indium Oxide (PT08.S5)"]
 # Calculate the approximate results from the thetas and the relative error
@@ -77,11 +77,17 @@ for i in range(0, len(thetas)):
     for j in range(0, len(test_set)):
         result = CalculateResult(test_set[j], thetas[i])
         denominator = max(abs(result), abs(test_y[j][i]))
-        rel_err = abs(result - test_y[j][i])/denominator
+        if test_y[j][i] == 0:
+            rel_err = abs(result)
+        else:
+            rel_err = abs(result - test_y[j][i])/denominator
         pollutant.append([j, result, test_y[j][i], rel_err, pol_labels[i]])
 
+# Puts the values in a "pandas.dataFrame" for seaborn plotting
 df = pd.DataFrame(pollutant, columns=["Hours", "Concentration", "True Concen.", "Relative Error", "Particulate"])
 
+
+# Plots the distribution of the relative errors
 # Setup matplotlib.pyplot figure
 f, axes = plt.subplots(5, 2, sharex=True, sharey=False)
 
@@ -111,21 +117,22 @@ for i in range(0, 5):
         axes[i,j].set_title(pol_labels[i * 2 + j])
         init = two
 
-
 figure = plt.gcf() # get current figure
 figure.set_size_inches(8, 8)
 sns.plt.savefig("Error_Distribution.png", dpi=200, bbox_inches="tight")
 #sns.plt.show()
 
+# Plots the relative error for the hours predicted
 lm = sns.lmplot(x="Hours", y="Relative Error", col="Particulate", hue="Particulate", data=df, col_wrap=3, size=4, sharey=False)
 figure = plt.gcf() # get current figure
 figure.set_size_inches(10, 8)
 axes = lm.axes
 for i in range(0, len(axes)):
     axes[i].set_xlim(-1, 25)
-sns.plt.savefig("Realtive_Error_Hour.png", dpi=200, bbox_inches="tight")
+sns.plt.savefig("Relative_Error_Hour.png", dpi=200, bbox_inches="tight")
 #sns.plt.show()
 
+# Plots the predicted concentration per hour
 mn_lst = [-3,0,900,100,0,700,200,600,50,950]
 mx_lst = [25,5,1200,200,15,1000,400,900,200,1250]
 lm = sns.lmplot(x="Hours", y="Concentration", col="Particulate", hue="Particulate", data=df, col_wrap=3, size=4, sharey=False)
@@ -138,6 +145,7 @@ for i in range(0, len(axes)):
 sns.plt.savefig("Concentration_Hour.png", dpi=200, bbox_inches="tight")
 #sns.plt.show()
 
+# Plots the actual particulate concentration for the last 24 hours
 mn_lst = [-3 ,0 ,700 ,0  ,0 ,400 ,0  ,300 ,0  ,600]
 mx_lst = [25 ,5 ,1600,700,30,1500,700,1200,200,2000]
 lm = sns.lmplot(x="Hours", y="True Concen.", col="Particulate", hue="Particulate", data=df, col_wrap=3, size=4, sharey=False)
