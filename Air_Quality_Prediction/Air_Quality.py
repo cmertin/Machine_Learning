@@ -68,8 +68,6 @@ result_mat = np.zeros([len(test_set), len(thetas)])
 rel_err_mat = np.zeros([len(test_set), len(thetas)])
 
 
-
-
 pollutant = []
 pol_labels = ["CO", "Tin Oxide (PT08.S1)", "Non-Metanic HydroCarbons", "Benzene", "Titania (PT08.S2)", "NOx", "Tungsten Oxide (PT08.S3)", "NO2", "Tungsten Oxide (PT08.S4)", "Indium Oxide (PT08.S5)"]
 # Calculate the approximate results from the thetas and the relative error
@@ -84,7 +82,7 @@ for i in range(0, len(thetas)):
         pollutant.append([j, result, test_y[j][i], rel_err, pol_labels[i]])
 
 # Puts the values in a "pandas.dataFrame" for seaborn plotting
-df = pd.DataFrame(pollutant, columns=["Hours", "Concentration", "True Concen.", "Relative Error", "Particulate"])
+df = pd.DataFrame(pollutant, columns=["Hours", "Concentration", "True Concentration", "Relative Error", "Particulate"])
 
 
 # Plots the distribution of the relative errors
@@ -133,8 +131,8 @@ sns.plt.savefig("Relative_Error_Hour.png", dpi=200, bbox_inches="tight")
 #sns.plt.show()
 
 # Plots the predicted concentration per hour
-mn_lst = [-3,0,900,100,0,700,200,600,50,950]
-mx_lst = [25,5,1200,200,15,1000,400,900,200,1250]
+mn_lst = [-3 ,0 ,700 ,-10,-5,400 ,0  ,300 ,0  ,600]
+mx_lst = [25 ,5 ,1600,400,20,1400,700,1200,200,2000]
 lm = sns.lmplot(x="Hours", y="Concentration", col="Particulate", hue="Particulate", data=df, col_wrap=3, size=4, sharey=False)
 figure = plt.gcf() # get current figure
 figure.set_size_inches(10, 8)
@@ -146,9 +144,9 @@ sns.plt.savefig("Concentration_Hour.png", dpi=200, bbox_inches="tight")
 #sns.plt.show()
 
 # Plots the actual particulate concentration for the last 24 hours
-mn_lst = [-3 ,0 ,700 ,0  ,0 ,400 ,0  ,300 ,0  ,600]
-mx_lst = [25 ,5 ,1600,700,30,1500,700,1200,200,2000]
-lm = sns.lmplot(x="Hours", y="True Concen.", col="Particulate", hue="Particulate", data=df, col_wrap=3, size=4, sharey=False)
+mn_lst = [-3 ,0 ,700 ,-10,-5,400 ,0  ,300 ,0  ,600]
+mx_lst = [25 ,5 ,1600,400,20,1400,700,1200,200,2000]
+lm = sns.lmplot(x="Hours", y="True Concentration", col="Particulate", hue="Particulate", data=df, col_wrap=3, size=4, sharey=False)
 figure = plt.gcf() # get current figure
 figure.set_size_inches(10, 8)
 axes = lm.axes
