@@ -150,17 +150,6 @@ def MakeFeatures(dataSet):
                     curr_data.append(1)
                 else:
                     curr_data.append(0)
-
-            # Get the data over the past 24 hours
-            past_24 = []
-            for i in range(count-24, count-1):
-                past_24.append(new_data[i][4:14])
-
-            for i in range(1, len(past_24)):
-                past_slope = []
-                for j in range(0, len(past_24[i])):
-                    temp = past_24[i][j] - past_24[i-1][j]
-                    curr_data.append(temp)
         new_data.append(curr_data)
     return new_data[23:]
 

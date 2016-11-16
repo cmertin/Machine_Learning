@@ -48,17 +48,14 @@ more accurate results. The overall features as of right now are
 14. Temperature in °C
 15. Relative Humidity (%)
 16. AH Absolute Humidity
-17. Weekday (boolean)
-18. Weekend (boolean)
-19. The rest of these are the differences in 5-14 in the past 24 hours<sup>*</sup>
+17. Monday (boolean)
+18. Tuesday (boolean)
+19. Wednesday (boolean)
+20. Thursday (boolean)
+21. Friday (boolean)
+22. Saturday (boolean)
+23. Sunday (boolean)
 
-<sup>*</sup> _Note_: How this is done is it goes hour by hour for the past 24 hours and
-subtracts values from the previous hour for that category. For example, if the
-feature vector currently being built is hour 2 on May 3, 2004, it will go back
-to hour 3 on May 2, 2004, subtract all the features (5-14) from hour 2 on May 2,
-2004, and add those subtractions as features. Then it will go on to hour 4 on
-May 2, 2004, perform the same subtraction on hour 3, add those as features, and
-so forth.
 
 With this many features, I am worried about over fitting of the data, but as
 this is a test, I can always change my model later. I was trying to get the
