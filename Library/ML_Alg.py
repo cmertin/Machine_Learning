@@ -4,8 +4,59 @@ from __future__ import print_function, division
 import numpy as np
 import numpy.linalg as npl
 import scipy.spatial.distance as spd
+from sklearn.utils import shuffle
 import copy as copy
 from math import sqrt
+
+def UpSample(x, y, test=.2):
+    test_size = int(len(x) * test)
+    train_size = len(x) - test_size
+    positive_x = []
+    positive_y = []
+    negative_x = []
+    negative_y = []
+    test_x = []
+    test_y = []
+    x_data = []
+    y_data = []
+
+    # Separates positives and negatives
+    for i in range(len(y)-1, -1, -1):
+        if y[i] == 1:
+            positive_x.append(x[i])
+            positive_y.append(y[i])
+        else:
+            negative_x.append(x[i])
+            negative_y.append(y[i])
+
+    # Shuffles the data
+    p_x, p_y = shuffle(positive_x, positive_y, random_state=0)
+    n_x, n_y = shuffle(positive_x, positive_y, random_state=0)
+
+    ratio = len(p_y)/len(n_y)
+    print(ratio)
+
+
+# Determines the accuracy for a given set of parameters theta, and returns
+# the percentage of those that it got right versus the entire data set
+def Accuracy(theta, test_x, test_y, h):
+    true_p = 0
+    true_n = 0
+    false_p = 0
+    false_n = 0
+    for i in range(0, test_x.shape[0]):
+        y = h(theta, test_x)
+        if y == 0:
+            if test_y[i] == 0:
+                true_n = true_n + 1
+            else:
+                false_n = false_n + 1
+        elif y == 1:
+            if test_y[i] == 1:
+                true_p = true_p + 1
+            else:
+                false_p = false_p + 1
+    return (true_p + true_n)/test_x.shape[0]
 
 # Hypothesis function for linear regression
 def h_linear(x, theta):
