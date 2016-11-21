@@ -3,14 +3,16 @@
 from __future__ import print_function, division
 import numpy as np
 import numpy.linalg as npl
+from itertools import repeat
 import scipy.spatial.distance as spd
 from sklearn.utils import shuffle
 import copy as copy
-from math import sqrt
+from math import sqrt, ceil
 
+# Performs upscaling on the data and returns a test set and data
+# set. It only performs upscaling when the positives are under represented
+# in the data. Has not been generalized yet. 
 def UpSample(x, y, test=.2):
-    test_size = int(len(x) * test)
-    train_size = len(x) - test_size
     positive_x = []
     positive_y = []
     negative_x = []
@@ -31,12 +33,51 @@ def UpSample(x, y, test=.2):
 
     # Shuffles the data
     p_x, p_y = shuffle(positive_x, positive_y, random_state=0)
-    n_x, n_y = shuffle(positive_x, positive_y, random_state=0)
+    n_x, n_y = shuffle(negative_x, negative_y, random_state=0)
 
     ratio = len(p_y)/len(n_y)
-    print(ratio)
+    num_test_p = int(len(p_y) * ratio * test)
+    num_test_n = int(len(n_x) * test)
 
+    if num_test_p < 4:
+        num_test_p = int(ceil(len(p_y) * test))
 
+    if num_test_p <= 2:
+        num_test_p = int(num_test_n * 0.1)
+    
+    for i in range(num_test_p, -1, -1):
+        test_x.append(p_x[i])
+        test_y.append(p_y[i])
+        p_x.pop(i)
+        p_y.pop(i)
+
+    for i in range(num_test_n, -1, -1):
+        test_x.append(n_x[i])
+        test_y.append(n_y[i])
+        n_x.pop(i)
+        n_y.pop(i)
+
+    test_x = np.array(test_x)
+    test_y = np.array(test_y)
+
+    x_data = n_x
+    y_data = n_y
+
+    scale = max(len(n_x), len(p_x)) * 0.4
+    ele_scale = int(scale/min(len(n_x), len(p_x)))
+
+    for i in range(0, len(p_x)):
+        for ele in range(0, ele_scale):
+            x_data.append(p_x[i])
+            y_data.append(p_y[i])
+
+    x_data, y_data = shuffle(x_data, y_data, random_state=0)
+
+    x_data = np.asarray(x_data)
+    y_data = np.asarray(y_data)
+
+    return [x_data, y_data], [test_x, test_y]
+    
 # Determines the accuracy for a given set of parameters theta, and returns
 # the percentage of those that it got right versus the entire data set
 def Accuracy(theta, test_x, test_y, h):
