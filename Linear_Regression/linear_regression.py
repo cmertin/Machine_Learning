@@ -22,13 +22,11 @@ def h(theta0, theta1, x):
 # in making sure a _simultaneous update_ is performed
 def J_Derivative(theta, x, y):
     derivative = []
-    t0 = theta[0]
-    t1 = theta[1]
     dt0 = 0
     dt1 = 0
     for i in range(0, len(x)):
-        dt0 = dt0 + (h(t0, t1, x[i]) - y[i])
-        dt1 = dt0 + (h(t0, t1, x[i]) - y[i]) * x[i]
+        dt0 = dt0 + (h(theta[0], theta[1], x[i]) - y[i])
+        dt1 = dt1 + (h(theta[0], theta[1], x[i]) - y[i]) * x[i]
     dt0 = dt0/len(x)
     dt1 = dt1/len(x)
     return [dt0, dt1]
@@ -71,7 +69,7 @@ x = ReadData(x_file)
 y = ReadData(y_file)
 x_ = np.arange(0, 9.01, .01)
 theta = np.zeros(2)
-alpha = 0.25
+alpha = 0.05
 
 plt.scatter(x, y)
 plt.xlabel("Ages in Years")
