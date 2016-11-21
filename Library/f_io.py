@@ -14,3 +14,15 @@ def Write_CSV(data, filename, precision=5):
             else:
                 fout.write(temp + '\n')
     fout.close()
+
+def ReadCSV(filename):
+    data = []
+    lines = [line.rstrip('\n') for line in open(filename)]
+
+    for line in lines:
+        local = [1] # First element of x = 0, offset for theta
+        temp = line.split(',')
+        for item in temp:
+            local.append(float(item.replace("\"","")))
+        data.append(local)
+    return data
