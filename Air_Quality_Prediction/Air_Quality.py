@@ -13,7 +13,7 @@ from scipy import stats, integrate
 LIB_PATH = os.path.dirname(os.getcwd()) # Goes one parent directory up
 LIB_PATH = LIB_PATH + "/Library/" # Appends the Library folder to the path
 sys.path.append(LIB_PATH)
-from ML_Alg import NormalEquation, CalculateResult
+from ML_Alg import NormalEquation_Reg, CalculateResult
 
 def ReadFile(filename):
     data = []
@@ -60,13 +60,8 @@ test_y = np.asarray(test_y)
 
 # Calculate the values of theta for each of the features in y
 for y in y_mat:
-    theta = NormalEquation(data, y)
+    theta = NormalEquation_Reg(data, y, 100)
     thetas.append(theta)
-
-hours = []
-result_mat = np.zeros([len(test_set), len(thetas)])
-rel_err_mat = np.zeros([len(test_set), len(thetas)])
-
 
 pollutant = []
 pol_labels = ["CO", "Tin Oxide (PT08.S1)", "Non-Metanic HydroCarbons", "Benzene", "Titania (PT08.S2)", "NOx", "Tungsten Oxide (PT08.S3)", "NO2", "Tungsten Oxide (PT08.S4)", "Indium Oxide (PT08.S5)"]
