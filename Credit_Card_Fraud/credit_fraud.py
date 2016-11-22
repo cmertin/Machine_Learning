@@ -8,7 +8,8 @@ import seaborn as sns
 sns.set(color_codes=True)
 import pandas as pd
 from sklearn.svm import LinearSVC
-from sklearn.linear_model import LogisticRegression
+from sklearn.linear_model import LogisticRegressionCV
+from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import classification_report
 from scipy import stats, integrate
 # Gets the path/library with my Machine Learning Programs and adds it to the
@@ -29,14 +30,25 @@ data, test_data = UpSample(x, y)
 
 print("Finished Up Sampling Data")
 
+
 svm = LinearSVC()
-print("Running Linear SVM")
+print("\nLinear SVM")
+print("==========")
 svm.fit(data[0], data[1])
 y_pred = svm.predict(test_data[0])
 print(classification_report(y_pred, test_data[1]))
 
-log_reg = LogisticRegression()
-print("Running Logistic Regression")
+log_reg = LogisticRegressionCV()
+print("\nLogistic Regression")
+print("===================")
 log_reg.fit(data[0], data[1])
 y_pred = log_reg.predict(test_data[0])
+print(classification_report(y_pred, test_data[1]))
+
+
+gnb = GaussianNB()
+print("\nGaussian Naive Bayes")
+print("====================")
+gnb.fit(data[0], data[1])
+y_pred = gnb.predict(test_data[0])
 print(classification_report(y_pred, test_data[1]))
