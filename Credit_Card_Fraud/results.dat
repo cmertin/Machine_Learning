@@ -1,0 +1,31 @@
+Finished Up Sampling Data
+
+Linear SVM
+==========
+             precision    recall  f1-score   support
+
+        0.0       0.66      1.00      0.79     37273
+        1.0       0.92      0.00      0.01     19691
+
+avg / total       0.75      0.66      0.52     56964
+
+
+Logistic Regression
+===================
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99     56294
+        1.0       0.88      0.13      0.23       670
+
+avg / total       0.99      0.99      0.99     56964
+
+
+Gaussian Naive Bayes
+====================
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00     56432
+        1.0       0.68      0.13      0.22       532
+
+avg / total       0.99      0.99      0.99     56964
+
