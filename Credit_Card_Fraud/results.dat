@@ -4,10 +4,10 @@ Linear SVM
 ==========
              precision    recall  f1-score   support
 
-        0.0       0.66      1.00      0.79     37273
-        1.0       0.92      0.00      0.01     19691
+        0.0       0.97      1.00      0.98     55179
+        1.0       0.83      0.05      0.09      1785
 
-avg / total       0.75      0.66      0.52     56964
+avg / total       0.97      0.97      0.96     56964
 
 
 Logistic Regression
