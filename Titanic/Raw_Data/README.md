@@ -1,5 +1,5 @@
-VARIABLE DESCRIPTIONS:
-=====================
+#VARIABLE DESCRIPTIONS:
+
 
 |Label    |Description|
 |---------|---------|
@@ -15,14 +15,14 @@ VARIABLE DESCRIPTIONS:
 |cabin    |       Cabin|
 |embarked |       Port of Embarkation (C = Cherbourg; Q = Queenstown; S = Southampton)|
 
-SPECIAL NOTES:
---------------
+##SPECIAL NOTES:
+
 
 ###Pclass is a proxy for socio-economic status (SES)
 
 1st = Upper; 2nd = Middle; 3rd = Lower
 
-###Age is in Years;
+###Age is in Years:
 
 Fractional if Age less than One (1)
 
