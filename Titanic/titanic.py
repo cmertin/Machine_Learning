@@ -117,7 +117,7 @@ def Plots(dataframe, color_palette):
     sns.set(font_scale=2.0)
     ax = sns.violinplot(x="all", y="Age", hue="Sex", data=temp, size=4, legend_out = False, split=True, palette=color_palette, inner="quart", scale="count")
     ax.set_ylabel("Age")
-    ax.set_xlabel("Gender")
+    ax.set_xlabel("Sex")
     plt.savefig("age_titanic.png", bbox_inches="tight")
     plt.clf()
 
@@ -166,7 +166,7 @@ y_vals = []
 test_set = []
 test_y_vals = []
 
-features = ["Class", "Gender", "Age", "SibSp", "ParCh", "Fare"]
+features = ["Class", "Sex", "Age", "SibSp", "ParCh", "Fare"]
 # Create the feature vectors for the training set
 for i in xrange(0, len(train_ids)):
     temp = train_data.iloc[i]
