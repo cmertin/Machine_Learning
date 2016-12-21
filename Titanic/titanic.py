@@ -59,7 +59,7 @@ def Plots(dataframe, color_palette):
     plt.ylabel("Survival Probability")
     plt.xlabel("Age Ranges")
     plt.legend(loc="best")
-    plt.savefig("age_titanic.png", bbox_inches="tight")
+    plt.savefig("ages_titanic.png", bbox_inches="tight")
     plt.clf()
 
     # Plots the survival chance based on the fares
