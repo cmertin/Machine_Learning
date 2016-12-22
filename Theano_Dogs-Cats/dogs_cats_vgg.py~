@@ -1,0 +1,9 @@
+import os, json
+from glob import glob
+import numpy as np
+from imp import reload
+np.set_printoptions(precision=4, linewidth=100)
+import matplotlib.pyplot as plt
+import utils; reload(utils)
+from utils import plots
+print(os.getcwd())
